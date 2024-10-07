@@ -1,47 +1,47 @@
 <?php
-// Ïîëó÷àåì äàííûå èç POST çàïðîñà
+// ÃÃ®Ã«Ã³Ã·Ã Ã¥Ã¬ Ã¤Ã Ã­Ã­Ã»Ã¥ Ã¨Ã§ POST Ã§Ã Ã¯Ã°Ã®Ã±Ã 
 $data = json_decode(file_get_contents('php://input'), true);
 
-// Ïðîâåðÿåì, ÷òî IP áûë ïåðåäàí
+// ÃÃ°Ã®Ã¢Ã¥Ã°Ã¿Ã¥Ã¬, Ã·Ã²Ã® IP Ã¡Ã»Ã« Ã¯Ã¥Ã°Ã¥Ã¤Ã Ã­
 if (isset($data['ip'])) {
     $userIp = $data['ip'];
 
-    // Çàìåíèòå 'YOUR_BOT_TOKEN' íà òîêåí âàøåãî Telegram áîòà
-    $botToken = "YOUR_BOT_TOKEN";
-    // Çàìåíèòå 'YOUR_CHAT_ID' íà âàø chat_id â Telegram
-    $chatId = "YOUR_CHAT_ID";
+    // Ã‡Ã Ã¬Ã¥Ã­Ã¨Ã²Ã¥ 'YOUR_BOT_TOKEN' Ã­Ã  Ã²Ã®ÃªÃ¥Ã­ Ã¢Ã Ã¸Ã¥Ã£Ã® Telegram Ã¡Ã®Ã²Ã 
+    $botToken = "7539465649:AAEJLhvN4ltTiOQL99Vtq6k0OLXGGsG3cgw";
+    // Ã‡Ã Ã¬Ã¥Ã­Ã¨Ã²Ã¥ 'YOUR_CHAT_ID' Ã­Ã  Ã¢Ã Ã¸ chat_id Ã¢ Telegram
+    $chatId = "1206254100";
 
-    // Ôîðìèðóåì ñîîáùåíèå
-    $message = "Íîâûé ïîñåòèòåëü ñ IP-àäðåñîì: " . $userIp;
+    // Ã”Ã®Ã°Ã¬Ã¨Ã°Ã³Ã¥Ã¬ Ã±Ã®Ã®Ã¡Ã¹Ã¥Ã­Ã¨Ã¥
+    $message = "ÃÃ®Ã¢Ã»Ã© Ã¯Ã®Ã±Ã¥Ã²Ã¨Ã²Ã¥Ã«Ã¼ Ã± IP-Ã Ã¤Ã°Ã¥Ã±Ã®Ã¬: " . $userIp;
 
-    // URL äëÿ îòïðàâêè ñîîáùåíèÿ ÷åðåç Telegram API
+    // URL Ã¤Ã«Ã¿ Ã®Ã²Ã¯Ã°Ã Ã¢ÃªÃ¨ Ã±Ã®Ã®Ã¡Ã¹Ã¥Ã­Ã¨Ã¿ Ã·Ã¥Ã°Ã¥Ã§ Telegram API
     $telegramApiUrl = "https://api.telegram.org/bot$botToken/sendMessage";
 
-    // Ïàðàìåòðû çàïðîñà
+    // ÃÃ Ã°Ã Ã¬Ã¥Ã²Ã°Ã» Ã§Ã Ã¯Ã°Ã®Ã±Ã 
     $postData = [
         'chat_id' => $chatId,
         'text'    => $message,
     ];
 
-    // Èíèöèàëèçèðóåì cURL ñåññèþ
+    // ÃˆÃ­Ã¨Ã¶Ã¨Ã Ã«Ã¨Ã§Ã¨Ã°Ã³Ã¥Ã¬ cURL Ã±Ã¥Ã±Ã±Ã¨Ã¾
     $ch = curl_init();
 
-    // Íàñòðîéêè cURL
+    // ÃÃ Ã±Ã²Ã°Ã®Ã©ÃªÃ¨ cURL
     curl_setopt($ch, CURLOPT_URL, $telegramApiUrl);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-    // Âûïîëíÿåì çàïðîñ
+    // Ã‚Ã»Ã¯Ã®Ã«Ã­Ã¿Ã¥Ã¬ Ã§Ã Ã¯Ã°Ã®Ã±
     $response = curl_exec($ch);
 
-    // Çàêðûâàåì cURL ñåññèþ
+    // Ã‡Ã ÃªÃ°Ã»Ã¢Ã Ã¥Ã¬ cURL Ã±Ã¥Ã±Ã±Ã¨Ã¾
     curl_close($ch);
 
-    // Îòïðàâëÿåì óñïåøíûé îòâåò
+    // ÃŽÃ²Ã¯Ã°Ã Ã¢Ã«Ã¿Ã¥Ã¬ Ã³Ã±Ã¯Ã¥Ã¸Ã­Ã»Ã© Ã®Ã²Ã¢Ã¥Ã²
     echo json_encode(['status' => 'success']);
 } else {
-    // Îòïðàâëÿåì îøèáêó, åñëè IP íå áûë ïåðåäàí
-    echo json_encode(['status' => 'error', 'message' => 'IP íå áûë ïåðåäàí']);
+    // ÃŽÃ²Ã¯Ã°Ã Ã¢Ã«Ã¿Ã¥Ã¬ Ã®Ã¸Ã¨Ã¡ÃªÃ³, Ã¥Ã±Ã«Ã¨ IP Ã­Ã¥ Ã¡Ã»Ã« Ã¯Ã¥Ã°Ã¥Ã¤Ã Ã­
+    echo json_encode(['status' => 'error', 'message' => 'IP Ã­Ã¥ Ã¡Ã»Ã« Ã¯Ã¥Ã°Ã¥Ã¤Ã Ã­']);
 }
 ?>
