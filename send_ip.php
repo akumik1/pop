@@ -9,7 +9,7 @@ if (isset($data['ip'])) {
     // Çàìåíèòå 'YOUR_BOT_TOKEN' íà òîêåí âàøåãî Telegram áîòà
     $botToken = "7539465649:AAEJLhvN4ltTiOQL99Vtq6k0OLXGGsG3cgw";
     // Çàìåíèòå 'YOUR_CHAT_ID' íà âàø chat_id â Telegram
-    $chatId = "1206254100";
+    $chatId = "1206254100 ";
 
     // Ôîðìèðóåì ñîîáùåíèå
     $message = "Íîâûé ïîñåòèòåëü ñ IP-àäðåñîì: " . $userIp;
